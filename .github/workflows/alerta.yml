@@ -1,0 +1,27 @@
+name: Notificacion de Integracion Continua
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Ejecutar programa Hola Mundo
+        run: node app.js
+
+      - name: Enviar notificacion a ntfy.sh
+        if: success()
+        run: |
+          curl -d "Nuevo commit en main: Se ejecuto correctamente el Hola Mundo en DevOs de Waldin Ceballos" https://ntfy.sh/devops-itla
